@@ -1,43 +1,52 @@
 
 # Testing - TrackFlow Order Service
 
-## Executando os testes
+## Running tests
 
-Para executar todos os testes:
-
-```bash
-./mvnw clean verify
-```
-
-No Windows:
+Windows:
 
 ```bash
 .\mvnw.cmd clean verify
 ```
 
-## Testes implementados
+Linux/macOS:
 
-### TrackFlowOrderServiceApplicationTests
+```bash
+./mvnw clean verify
+```
 
-Verifica:
+## Persistence Tests
 
-- Inicialização do contexto Spring.
-- Carregamento das configurações.
-- Integração com o banco PostgreSQL.
-- Inicialização do Flyway.
+### OrderPersistenceTest
 
-## Pré-requisitos
+The persistence tests validate:
 
-- Java 21.
-- PostgreSQL em execução.
-- Banco `trackflow_orders` criado.
-- Variáveis de ambiente configuradas.
+- Customer registration and document lookup.
+- Order persistence with associated customer.
+- Origin and destination address relationships.
+- Initial order status.
+- Automatic creation of the initial status history.
+- Pagination of orders by authenticated user ID.
 
-## Estratégia de testes
+## Database requirements
 
-O projeto utilizará:
+- PostgreSQL running.
+- Database `trackflow_orders` created.
+- Environment variables configured.
 
-- JUnit 5 para testes automatizados.
-- Mockito para isolamento de dependências.
-- Spring Boot Test para testes de integração.
-- Testes de repositórios e APIs nas próximas etapas.
+## Database migrations
+
+Flyway automatically executes migrations
+located at:
+
+`src/main/resources/db/migration`
+
+Hibernate uses `ddl-auto=validate` to verify
+the entity mappings against the database schema.
+
+## Test isolation
+
+Tests use the configured PostgreSQL database
+and run within Spring's transactional test context.
+
+Changes are rolled back after each test.

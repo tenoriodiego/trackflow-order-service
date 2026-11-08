@@ -67,15 +67,55 @@ Windows:
 .\mvnw.cmd clean verify
 ```
 
-## Status do desenvolvimento
 
-- [x] Estrutura inicial.
-- [x] Configuração do Maven.
-- [x] Configuração do PostgreSQL.
-- [x] Configuração do Flyway.
-- [ ] Modelagem das entidades.
-- [ ] Implementação das regras de negócio.
-- [ ] Integração com Auth Service.
-- [ ] Testes de integração.
-- [ ] Deploy.
-- [ ] Integração com RabbitMQ.
+## Domain Model
+
+The Order Service manages the logistics operations
+and shipment tracking process.
+
+### Entities
+
+- **Customer:** Customer responsible for the shipment.
+- **Address:** Origin and destination addresses.
+- **Order:** Main shipment information and tracking code.
+- **OrderStatusHistory:** Historical record of shipment status changes.
+
+### Order Status Lifecycle
+
+- CREATED
+- COLLECTED
+- IN_TRANSIT
+- OUT_FOR_DELIVERY
+- DELIVERED
+- CANCELLED
+
+### Persistence
+
+- PostgreSQL for relational data storage.
+- Spring Data JPA for persistence operations.
+- Flyway for database versioning and migrations.
+- UUID as the primary key strategy.
+
+### Database Tables
+
+- customers
+- addresses
+- orders
+- order_status_history
+
+## Development Progress
+
+- [x] Initial project structure.
+- [x] Maven and PostgreSQL configuration.
+- [x] Flyway configuration.
+- [x] Domain entities.
+- [x] Order status enumeration.
+- [x] JPA repositories.
+- [x] Initial database migration.
+- [x] Persistence tests.
+- [ ] Business rules and services.
+- [ ] REST API endpoints.
+- [ ] JWT integration.
+- [ ] Integration tests.
+- [ ] Deployment.
+- [ ] RabbitMQ integration.
