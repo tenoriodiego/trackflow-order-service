@@ -8,6 +8,7 @@ import java.util.UUID;
 import br.com.trackflow.order.service.address.entity.Address;
 import br.com.trackflow.order.service.customer.entity.Customer;
 import br.com.trackflow.order.service.order.enums.OrderStatus;
+import br.com.trackflow.order.service.order.exception.InvalidOrderStatusTransitionException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -177,5 +178,24 @@ public class Order {
 
     public Long getVersion() {
         return version;
+    }
+
+    public void changeStatus(
+            OrderStatus newStatus,
+            String description,
+            String location) {
+
+        if (!this.status.canTransitionTo(newStatus)) {
+            throw new InvalidOrderStatusTransitionException(
+                    this.status,
+                    newStatus);
+        }
+
+        this.status = newStatus;
+
+        addStatusHistory(
+                newStatus,
+                description,
+                location);
     }
 }

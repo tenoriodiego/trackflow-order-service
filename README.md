@@ -103,6 +103,32 @@ and shipment tracking process.
 - orders
 - order_status_history
 
+## Camada de serviços e regras de negócio
+
+A aplicação possui serviços responsáveis pela execução das regras de negócio:
+
+- **CustomerService:** cadastro e consulta de clientes, com verificação de documentos duplicados.
+- **AddressService:** cadastro e consulta de endereços reutilizáveis.
+- **OrderService:** criação, consulta, paginação e atualização de pedidos.
+- **TrackingCodeGenerator:** geração de códigos de rastreamento no formato `TF-XXXXXXXXXXXX`.
+
+### Regras de negócio
+
+- Todo pedido deve possuir um cliente, endereço de origem e endereço de destino existentes.
+- Cada pedido recebe um código de rastreamento único.
+- Todo pedido começa com o status `CREATED`.
+- A criação do pedido registra automaticamente a primeira movimentação no histórico.
+- Alterações de status devem respeitar a sequência permitida.
+- Cada alteração válida gera um novo registro no histórico.
+- Os pedidos podem ser consultados por usuário, com paginação.
+- O campo `createdBy` armazena o UUID do usuário responsável, sem dependência direta do banco do Auth Service.
+
+### Fluxo de status
+
+`CREATED → COLLECTED → IN_TRANSIT → OUT_FOR_DELIVERY → DELIVERED`
+
+O pedido também pode ser cancelado enquanto estiver em `CREATED` ou `COLLECTED`.
+
 ## Development Progress
 
 - [x] Initial project structure.
